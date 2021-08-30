@@ -39,7 +39,7 @@ module.exports = {
       }).required(),
       recruitingDepartment: Joi.array().items({
         department: Joi.string().required(), topics: Joi.array().items().required()
-      }).required(),
+      }).required().min(1),
     });
 
     const validation = schema.validate(req.body);
