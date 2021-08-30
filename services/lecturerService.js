@@ -21,7 +21,7 @@ module.exports = {
         return result;
     },
     updateLectureDetails:async(data)=>{
-        const isExist = await lecProfile.findOne({lecturer:data.id});
+        const isExist = await lecProfile.findOne({lecturer:data.lecturer});
         if (isExist){
             await lecProfile.findOneAndUpdate({lecturer:data.id},data);
         }else{

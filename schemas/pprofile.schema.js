@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const dbUtill = require("../dbUtill/utills");
 
 const pprofileSchema = new mongoose.Schema({
+  professor:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: dbUtill.PROFESSOR},
   schoolName: {
     type: String,
     required: true,
