@@ -6,7 +6,7 @@ module.exports = {
       firstName: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(25).required(),
-      lastName: Joi.array().items(Joi.object({key: Joi.string(), value: Joi.string()})),
+      lastName: Joi.string(),
       type: Joi.string().default("lecturer")
     });
     const validation = schema.validate(req.body);

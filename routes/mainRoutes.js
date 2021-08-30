@@ -6,4 +6,6 @@ router.use("/lecturer", require("./lecturerRoutes"));
 
 router.use("/professor", require("./professorRoutes"));
 
+//router.use("/common",require("./commonRoutes"));
+
 module.exports = router;
