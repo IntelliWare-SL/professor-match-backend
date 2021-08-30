@@ -30,12 +30,12 @@ module.exports = {
         const {_id,firstName, lastName, email} = user
         let isProfileCompleted = false;
         if (type=="professor"){
-          const complete = await Pprofile.findById(_id);
+          const complete = await Pprofile.findOne({professor:_id});
           if (complete){
             isProfileCompleted = true;
           }
         }else if (type=="lecturer"){
-          const complete = await Lprofile.findById(_id);
+          const complete = await Lprofile.findOne({lecturer:_id});
           if(complete){
             isProfileCompleted = true;
           }
