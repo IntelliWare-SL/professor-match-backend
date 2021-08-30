@@ -28,19 +28,18 @@ module.exports = {
   },
   updateProfessor: async (req, res) => {
     const schema = Joi.object({
-      schoolName: Joi.string().allow(""),
-      college: Joi.string().allow(""),
-      department: Joi.string().allow(""),
-      campusLocation: Joi.string().allow(""),
-      discipline: Joi.string().allow(""),
+      schoolName: Joi.string().required(),
+      college: Joi.string().required(),
+      department: Joi.string().required(),
+      campusLocation: Joi.string().required(),
+      discipline: Joi.string().required(),
       role: Joi.array().items({
-        type: Joi.string(), inPerson: Joi.boolean(),
+        type: Joi.string().required(), inPerson: Joi.boolean(),
         zoom: Joi.boolean()
-      }),
+      }).required(),
       recruitingDepartment: Joi.array().items({
-        department: Joi.string(),
-        topics: Joi.array().items(Joi.string())
-      })
+        department: Joi.string().required(), topics: Joi.array().items().required()
+      }).required(),
     });
 
     const validation = schema.validate(req.body);
@@ -50,8 +49,10 @@ module.exports = {
     }
     const body = validation.value;
     const id = req.params.id;
+    body.professor = id;
     try{
-      await updateProfessorDetails(id,body);
+      await updateProfessorDetails(body);
+      res.status(201).send({success: 1});
     }catch(error){
       res.status(error.code || 401).send({message: error.message});
     }

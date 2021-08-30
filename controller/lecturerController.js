@@ -37,8 +37,8 @@ module.exports = {
         school: Joi.string().allow("")
       }),
       recruitingDepartment: Joi.array().items({
-        department: Joi.string(), topics: Joi.array()
-      }),
+        department: Joi.string().required(), topics: Joi.array().items().required()
+      }).required(),
       socialMedia: Joi.array().items(),
     });
     const validation = schema.validate(req.body);

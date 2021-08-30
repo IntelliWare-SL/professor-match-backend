@@ -38,10 +38,10 @@ const pprofileSchema = new mongoose.Schema({
   ],
   recruitingDepartment: [
     {
-      department: {type: String},
+      department:  String,
       topics: [{type: String}]
     }
-  ]
+  ],
 }, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.PROFPROFILE, pprofileSchema);

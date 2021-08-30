@@ -2,6 +2,7 @@ const {genSaltSync, hashSync, compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Professor = require("../schemas/professor.schema");
 const Lecturer = require("../schemas/lecturer.schema");
+const proProfile = require("../schemas/pprofile.schema")
 const moment = require("moment");
 
 
@@ -19,7 +20,14 @@ module.exports = {
         const result = await user.save();
         return result;
     },
-    updateProfessorDetails:async(id,data)=>{
-        await Professor.findByIdAndUpdate(id,data);
+    updateProfessorDetails:async(data)=>{
+        const isExist = await proProfile.findOne({professor:data.professor});
+        if(isExist){
+            await proProfile.findOneAndUpdate({professor:data.professor},data);
+        }
+        else{
+            await proProfile.create(data);
+        }
+
     }
 }
