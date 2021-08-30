@@ -29,5 +29,9 @@ module.exports = {
             await proProfile.create(data);
         }
 
+    },
+    getProfessorInfo:async(id)=>{
+        const result = await proProfile.findOne({professor:id});
+        return result;
     }
 }

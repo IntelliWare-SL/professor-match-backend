@@ -5,5 +5,6 @@ const professorController = require("../controller/professorController");
 
 professorRouter.post("/register", professorController.registerUser);
 professorRouter.patch("/editProfessor/:id",professorController.updateProfessor);
+professorRouter.get("/me",professorController.getInfo);
 
 module.exports = professorRouter;

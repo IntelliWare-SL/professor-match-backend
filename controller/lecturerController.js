@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { saveUser, updateLectureDetails} = require("../services/lecturerService");
+const { saveUser,getLecturerInfo, updateLectureDetails} = require("../services/lecturerService");
 
 module.exports = {
 
@@ -58,6 +58,15 @@ module.exports = {
       await updateLectureDetails( body);
       res.status(201).send({success: 1});
     } catch (error) {
+      res.status(error.code || 401).send({message: error.message});
+    }
+  },
+  getInfo:async (req,res)=>{
+    try{
+      const id = req.user._id;
+      const details = await getLecturerInfo(id);
+      res.status(201).send({success: 1,user:req.user,details});
+    }catch(error){
       res.status(error.code || 401).send({message: error.message});
     }
   }

@@ -29,5 +29,9 @@ module.exports = {
             await lecProfile.create(data);
         }
 
+    },
+    getLecturerInfo:async(id)=>{
+        const lecInfo = await lecProfile.findOne({lecturer:id});
+        return lecInfo;
     }
 }
