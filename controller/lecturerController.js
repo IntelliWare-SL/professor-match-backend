@@ -37,7 +37,7 @@ module.exports = {
         school: Joi.string().allow("")
       }),
       recruitingDepartment: Joi.array().items({
-        department: Joi.string().required(), topics: Joi.array().items().required()
+        department: Joi.string().required(), topics: Joi.array().items().required().min(1)
       }).required().min(1),
       socialMedia: Joi.array().items(),
     });
