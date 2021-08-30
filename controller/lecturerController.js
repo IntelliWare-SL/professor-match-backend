@@ -59,6 +59,7 @@ module.exports = {
       await updateLectureDetails( body);
       res.status(201).send({success: 1});
     } catch (error) {
+      console.log(error);
       res.status(error.code || 401).send({message: error.message});
     }
   },

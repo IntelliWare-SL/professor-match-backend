@@ -6,33 +6,94 @@ const proProfile = require("../schemas/pprofile.schema");
 const Professor = require("../schemas/professor.schema");
 const lecProfile = require("../schemas/lecProfile.schema")
 const fs = require('fs');
+const _ = require("lodash");
+const sgMail = require('@sendgrid/mail')
 
 const sendEmails = async function (data) {
-  const selectedByRole = []
-  data.map(async (item) => {
-    const result = await proProfile.find({
+  let filter = []
+  let selectedByInPerson = [];
+  let selectedByZoom =[];
+  if (data.inPerson){
+    filter = [{type:data.type},{inPerson:true}]
+    selectedByInPerson = await proProfile.find({
       role: {
-        $elemMatch: {$or:{
-            type: item.type,
-            inPerson: item.inPerson,
-            zoom: item.zoom
-          }}
+        $elemMatch: {$and:filter}
       }
-    });
-    selectedByRole.push(...result);
+    })
+  }
+  if (data.zoom){
+    filter = [{type:data.type},{zoom:true}]
+    selectedByZoom = await proProfile.find({
+      role: {
+        $elemMatch: {$and:filter}
+      }
+    })
+  }
+  const selectedByRole = _.uniq(selectedByInPerson.concat(selectedByZoom));
+  const profId = [];
+  const selectedByTopic =[];
+  let topics = [];
+  data.recruitingDepartment.forEach((dep)=>topics= topics.concat(dep.topics));
+  selectedByRole.forEach((prof)=>{
+    let profTopics = [];
+    prof.recruitingDepartment.forEach((p)=>profTopics= profTopics.concat(p.topics));
 
+    if(_.intersection(topics,profTopics).length>0){
+      selectedByTopic.push(prof);
+      profId.push(prof.professor)
+    }
+  })
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const professors = [];
+  const emailsProfessor =[];
+  profId.map(async(p)=>{
+    const professor = await Professor.findById(p)
+    professors.push(professor);
+    emailsProfessor.push(professor.email)
+  })
+  const lectureDetails = await Lecturer.findById(data.lecturer);
+  const stringTopics = topics.join(", ");
+
+  const msg = {
+    to: emailsProfessor, // Change to your recipient
+    from: 'app.professor.match@gmail.com', // Change to your verified sender
+    subject: 'New lecturer joined',
+    html:`<h3>New lecturer has signed up matching your requirements</h3><br/><div>Name - ${lectureDetails.firstName} ${lectureDetails.lastName}</div><div>Email - ${lectureDetails.email}</div><div>Skills - ${stringTopics}</div>`
+  }
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log('Email sent')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  const emailMessage =[];
+  professors.forEach((p,index)=>{
+    let skillsA = []
+   selectedByTopic[index].recruitingDepartment.forEach(g=>skillsA = skillsA.concat(g.topics))
+    const newString = skillsA.join(", ")
+
+    emailMessage.push(`<div>Name - ${p.firstName} ${p.lastName}</div><div>Email - ${p.email}</div><div>Skills looking for - ${newString}</div><br/><br/>`);
   });
+  const stringEmailMessage = emailMessage.join('');
+  const msg2 = {
+    to: [lectureDetails.email], // Change to your recipient
+    from: 'app.professor.match@gmail.com', // Change to your verified sender
+    subject: 'Professors who are looking for your skills',
+    html:`<h3>Professors who are looking for your skills</h3><br/>${stringEmailMessage}`
+  }
+  sgMail
+    .send(msg2)
+    .then(() => {
+      console.log('Email sent')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 
-
-}
-
-// sendEmails:async(data)=>{
-//   const professors = [];
-//   const profResult = await proProfile({recruitingDepartment:{$elemMatch:{$in:{
-//           department:"CSE"
-//         }}}});
-//   console.log(profResult);
-// },
+};
 
 module.exports = {
 
@@ -46,7 +107,6 @@ module.exports = {
       throw new Error("Email already exist");
       return;
     }
-
     const result = await user.save();
     return result;
   },
@@ -59,7 +119,7 @@ module.exports = {
     } else {
       await lecProfile.create(data);
     }
-    await sendEmails(data.recruitingDepartment)
+    await sendEmails(data)
 
   },
   getLecturerInfo: async (id) => {
