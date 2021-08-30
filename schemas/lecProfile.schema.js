@@ -45,11 +45,11 @@ const lprofileSchema = new mongoose.Schema({
       topics: [{type: String}]
     }
   ],
-  socialMedia: [{
+  socialMedia: {
 
     LinkedIn: String, GitHub: String, Twitter: String, PersonalPortfolio: String, Blog: String
 
-  }],
+  },
   img: {type: String}
 }, {timestamps: true});
 

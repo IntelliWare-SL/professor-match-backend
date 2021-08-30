@@ -28,7 +28,8 @@ module.exports = {
       res.status(error.code || 409).send({message: error.message});
     }
 
-  },
+  }
+  ,
   editLecturer: async (req, res) => {
     const schema = Joi.object({
       type: Joi.string().required(),
@@ -44,7 +45,7 @@ module.exports = {
       recruitingDepartment: Joi.array().items({
         department: Joi.string().required(), topics: Joi.array().items().required().min(1)
       }).required().min(1),
-      socialMedia: Joi.array().items(),
+      socialMedia: Joi.object(),
       img:Joi.string()
     });
     const validation = schema.validate(req.body);
