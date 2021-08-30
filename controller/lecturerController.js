@@ -51,20 +51,20 @@ module.exports = {
   },
   editLecturer: async (req, res) => {
     const schema = Joi.object({
-      type: Joi.string().allow(""),
-      city: Joi.string().allow(""),
-      state: Joi.string().allow(""),
-      aboutMe: Joi.string().allow(""),
-      inPerson: Joi.boolean(),
-      zoom: Joi.boolean(),
+      type: Joi.string().required(),
+      city: Joi.string().required(),
+      state: Joi.string().required(),
+      aboutMe: Joi.string().required(),
+      inPerson: Joi.boolean().required(),
+      zoom: Joi.boolean().required(),
       education: Joi.array().items({
-        level: Joi.string(), focus: Joi.string(),
-        school: Joi.string()
+        level: Joi.string().allow(""), focus: Joi.string().allow(""),
+        school: Joi.string().allow("")
       }),
       recruitingDepartment: Joi.array().items({
         department: Joi.string(), topics: Joi.array()
       }),
-      socialMedia: Joi.array().items(Joi.string()),
+      socialMedia: Joi.array().items({platform:Joi.string().allow("")}),
     });
     const validation = schema.validate(req.body);
     if (validation.error) {

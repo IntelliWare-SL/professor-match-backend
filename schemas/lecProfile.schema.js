@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const dbUtill = require("../dbUtill/utills");
-const {boolean} = require("joi");
 
 const lprofileSchema = new mongoose.Schema({
   type: {
@@ -30,15 +29,15 @@ const lprofileSchema = new mongoose.Schema({
   },
   education: [
     {
-      type: {
-        level: {type: String}, focus: {type: String}, school: {type: String}
-      }
+
+        level: String, focus: String, school: String
+
     }
   ]
   ,
   recruitingDepartment: [
     {
-      department: {type: String},
+      department:  String,
       topics: [{type: String}]
     }
   ],
