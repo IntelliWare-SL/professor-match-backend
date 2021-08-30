@@ -1,7 +1,10 @@
 const Joi = require("joi");
-const {loginLecturer, saveUser, updateLectureDetails} = require("../services/lecturerService");
+const { saveUser, updateLectureDetails} = require("../services/lecturerService");
+
 module.exports = {
+
   registerUser: async (req, res) => {
+
     const schema = Joi.object({
       firstName: Joi.string().required(),
       email: Joi.string().email().required(),
@@ -14,6 +17,7 @@ module.exports = {
       res.status(401).send({message: validation.error.message});
       return;
     }
+
     const data = validation.value;
     try {
       const result = await saveUser(data);
@@ -40,6 +44,7 @@ module.exports = {
         department: Joi.string().required(), topics: Joi.array().items().required().min(1)
       }).required().min(1),
       socialMedia: Joi.array().items(),
+      img:Joi.string()
     });
     const validation = schema.validate(req.body);
     if (validation.error) {

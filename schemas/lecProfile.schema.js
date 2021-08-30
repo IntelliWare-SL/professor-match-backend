@@ -4,7 +4,8 @@ const dbUtill = require("../dbUtill/utills");
 const lprofileSchema = new mongoose.Schema({
   lecturer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: dbUtill.LECTURER},
+    ref: dbUtill.LECTURER
+  },
   type: {
     type: String,
     required: true,
@@ -33,22 +34,23 @@ const lprofileSchema = new mongoose.Schema({
   education: [
     {
 
-        level: String, focus: String, school: String
+      level: String, focus: String, school: String
 
     }
   ]
   ,
   recruitingDepartment: [
     {
-      department:  String,
+      department: String,
       topics: [{type: String}]
     }
   ],
-  socialMedia: [    {
+  socialMedia: [{
 
-    LinkedIn: String, GitHub: String, Twitter: String,PersonalPortfolio:String,Blog:String
+    LinkedIn: String, GitHub: String, Twitter: String, PersonalPortfolio: String, Blog: String
 
-  }]
+  }],
+  img: {type: String}
 }, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.LECPROFILE, lprofileSchema);

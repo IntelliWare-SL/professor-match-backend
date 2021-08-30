@@ -42,6 +42,9 @@ const pprofileSchema = new mongoose.Schema({
       topics: [{type: String}]
     }
   ],
+  img:{
+    type:String
+  }
 }, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.PROFPROFILE, pprofileSchema);

@@ -4,6 +4,7 @@ const Lecturer = require("../schemas/lecturer.schema");
 const moment = require("moment");
 const Professor = require("../schemas/professor.schema");
 const lecProfile = require("../schemas/lecProfile.schema")
+const fs = require('fs');
 
 
 module.exports = {
