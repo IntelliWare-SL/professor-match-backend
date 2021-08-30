@@ -7,6 +7,7 @@ const lecturerController = require("../controller/lecturerController");
 
 lecturerRouter.post("/register",lecturerController.registerUser);
 lecturerRouter.patch("/editLecturer/:id",lecturerController.editLecturer);
-lecturerRouter.get("/me",auth.checkToken,lecturerController.getInfo)
+lecturerRouter.get("/me",auth.checkToken,lecturerController.getInfo);
+
 
 module.exports = lecturerRouter;

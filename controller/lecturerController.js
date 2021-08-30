@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const { saveUser,getLecturerInfo, updateLectureDetails} = require("../services/lecturerService");
+const sgMail = require('@sendgrid/mail')
 
 module.exports = {
 

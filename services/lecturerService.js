@@ -19,8 +19,15 @@ module.exports = {
             return;
         }
         const result = await user.save();
+        
+
+
         return result;
     },
+  sendEmails:async()=>{
+
+  }
+  ,
     updateLectureDetails:async(data)=>{
         const isExist = await lecProfile.findOne({lecturer:data.lecturer});
         if (isExist){
