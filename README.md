@@ -1,4 +1,4 @@
-# medical-app-express
+# Professor Match
 
 ## Guide
 
