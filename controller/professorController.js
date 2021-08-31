@@ -39,6 +39,7 @@ module.exports = {
       recruitingDepartment: Joi.array().items({
         department: Joi.string().required(), topics: Joi.array().items().required().min(1)
       }).required().min(1)
+      , img:Joi.string().allow("")
     });
 
     const validation = schema.validate(req.body);
